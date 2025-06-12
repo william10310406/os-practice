@@ -29,7 +29,7 @@ os-practice/
 
 1. 克隆倉庫
 ```bash
-git clone [your-repository-url]
+git clone https://github.com/william10310406/os-practice
 cd os-practice
 ```
 
