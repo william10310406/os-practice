@@ -20,6 +20,49 @@
 - 即時監控（30 秒）
 - 詳細硬體報告
 
+## multiprogramming_simulator.py 說明
+
+這個模擬器會即時顯示你目前 Dock（前景）上正在執行的所有應用程式，並顯示每個 App 的：
+- PID（進程 ID）
+- 名稱
+- CPU 使用率
+- 記憶體用量（MB）
+
+### 技術原理
+- 透過 AppleScript 指令：
+  ```applescript
+  tell application "System Events"
+      set dockApps to name of every process whose background only is false
+      return dockApps
+  end tell
+  ```
+  取得 Dock 上所有正在執行的 App 名稱。
+- 用 Python 的 subprocess 執行上面 AppleScript，並解析結果。
+- 用 psutil 取得每個 App 的 PID、CPU、記憶體資訊。
+- 每 2 秒自動更新一次畫面，讓你即時看到 Dock 狀態。
+
+### 執行畫面範例
+```
+=== macOS Dock 應用程式監控 ===
+可用記憶體: 1024MB / 1024MB
+
+Dock 上正在執行的應用程式:
+PID     名稱            CPU%    記憶體(MB)
+--------------------------------------------------
+1234    Terminal        1.2%    50.3
+5678    Safari          3.5%    120.7
+...
+
+系統資源使用:
+CPU 使用率: 10.9%
+記憶體使用率: 45.2%
+==================================================
+```
+
+### 權限說明
+- 第一次執行時，macOS 會要求你授權「自動化」權限，允許 Cursor/Terminal 控制 System Events。
+- 請到「系統設定 > 隱私權與安全性 > 自動化」確認權限已開啟。
+
 ## 系統需求
 
 - macOS 作業系統
